@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertiChain - Blockchain Certificate Verification System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-certificate"></i>
+                <h1>CertiChain - Blockchain Certificate Verification System</h1>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <i class="fas fa-cube"></i>
+                    <span id="blockCount">0</span>
+                    <label>Blocks</label>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="certificateCount">0</span>
+                    <label>Certificates</label>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span id="chainStatus">Valid</span>
+                    <label>Chain Status</label>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    <span id="lastUpdate">Never</span>
+                    <label>Last Update</label>
+                </div>
+            </div>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="issue">
+                <i class="fas fa-plus-circle"></i>
+                Issue Certificate
+            </button>
+            <button class="tab-btn" data-tab="verify">
+                <i class="fas fa-search"></i>
+                Verify Certificate
+            </button>
+            <button class="tab-btn" data-tab="explorer">
+                <i class="fas fa-cube"></i>
+                Blockchain Explorer
+            </button>
+            <button class="tab-btn" data-tab="settings">
+                <i class="fas fa-cog"></i>
+                Settings
+            </button>
+        </div>
+
+        <main>
+            <section id="issue" class="tab-content active">
+                <div class="section-header">
+                    <i class="fas fa-plus-circle"></i>
+                    <h2>Issue New Certificate</h2>
+                </div>
+                <form id="certificateForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="certificateId">
+                                <i class="fas fa-id-card"></i>
+                                Certificate ID
+                            </label>
+                            <input type="text" id="certificateId" required placeholder="Enter certificate ID">
+                            <small class="form-hint">Unique identifier for the certificate</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentName">
+                                <i class="fas fa-user-graduate"></i>
+                                Student Name
+                            </label>
+                            <input type="text" id="studentName" required placeholder="Enter student name">
+                        </div>
+                        <div class="form-group">
+                            <label for="courseName">
+                                <i class="fas fa-book"></i>
+                                Course Name
+                            </label>
+                            <input type="text" id="courseName" required placeholder="Enter course name">
+                        </div>
+                        <div class="form-group">
+                            <label for="issueDate">
+                                <i class="fas fa-calendar-alt"></i>
+                                Issue Date
+                            </label>
+                            <input type="date" id="issueDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="issuer">
+                                <i class="fas fa-university"></i>
+                                Issuer
+                            </label>
+                            <input type="text" id="issuer" required placeholder="Enter issuer name">
+                        </div>
+                        <div class="form-group">
+                            <label for="certificateType">
+                                <i class="fas fa-graduation-cap"></i>
+                                Certificate Type
+                            </label>
+                            <select id="certificateType" required>
+                                <option value="">Select certificate type</option>
+                                <option value="degree">Degree</option>
+                                <option value="diploma">Diploma</option>
+                                <option value="certification">Certification</option>
+                                <option value="course">Course Completion</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="expiryDate">
+                                <i class="fas fa-hourglass-end"></i>
+                                Expiry Date (Optional)
+                            </label>
+                            <input type="date" id="expiryDate">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="description">
+                                <i class="fas fa-align-left"></i>
+                                Description
+                            </label>
+                            <textarea id="description" rows="3" placeholder="Enter certificate description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn" id="previewBtn">
+                            <i class="fas fa-eye"></i>
+                            Preview Certificate
+                        </button>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-plus"></i>
+                            Issue Certificate
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <section id="verify" class="tab-content">
+                <div class="section-header">
+                    <i class="fas fa-search"></i>
+                    <h2>Verify Certificate</h2>
+                </div>
+                <div class="verify-options">
+                    <div class="verify-option active" data-option="id">
+                        <i class="fas fa-id-card"></i>
+                        <span>Verify by ID</span>
+                    </div>
+                    <div class="verify-option" data-option="hash">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Verify by Hash</span>
+                    </div>
+                </div>
+                <form id="verificationForm">
+                    <div class="form-group" id="idVerification">
+                        <label for="verifyCertificateId">
+                            <i class="fas fa-id-card"></i>
+                            Certificate ID
+                        </label>
+                        <input type="text" id="verifyCertificateId" required placeholder="Enter certificate ID to verify">
+                    </div>
+                    <div class="form-group hidden" id="hashVerification">
+                        <label for="verifyCertificateHash">
+                            <i class="fas fa-hashtag"></i>
+                            Certificate Hash
+                        </label>
+                        <input type="text" id="verifyCertificateHash" placeholder="Enter certificate hash to verify">
+                    </div>
+                    <button type="submit" class="verify-btn">
+                        <i class="fas fa-search"></i>
+                        Verify Certificate
+                    </button>
+                </form>
+                <div id="verificationResult" class="hidden">
+                    <div class="result-header">
+                        <h3>Verification Result</h3>
+                        <div class="result-status">
+                            <i class="fas fa-check-circle success-icon"></i>
+                            <span class="status-text">Verified</span>
+                        </div>
+                    </div>
+                    <div id="resultContent" class="result-content"></div>
+                    <div class="result-actions">
+                        <button class="secondary-btn" id="downloadResultBtn">
+                            <i class="fas fa-download"></i>
+                            Download Result
+                        </button>
+                        <button class="secondary-btn" id="shareResultBtn">
+                            <i class="fas fa-share-alt"></i>
+                            Share Result
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="explorer" class="tab-content">
+                <div class="section-header">
+                    <i class="fas fa-cube"></i>
+                    <h2>Blockchain Explorer</h2>
+                </div>
+                <div class="explorer-controls">
+                    <div class="search-container">
+                        <input type="text" id="blockSearch" placeholder="Search by block hash or certificate ID">
+                        <button id="searchBtn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-container">
+                        <select id="blockFilter">
+                            <option value="all">All Blocks</option>
+                            <option value="genesis">Genesis Block</option>
+                            <option value="certificate">Certificate Blocks</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="blockchain-visualization">
+                    <div id="blockchainContainer" class="blockchain-container">
+                        <!-- Blocks will be added here dynamically -->
+                    </div>
+                </div>
+                <div class="block-details hidden" id="blockDetails">
+                    <div class="details-header">
+                        <h3>Block Details</h3>
+                        <button class="close-btn" id="closeBlockDetails">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div id="blockDetailsContent"></div>
+                </div>
+            </section>
+
+            <section id="settings" class="tab-content">
+                <div class="section-header">
+                    <i class="fas fa-cog"></i>
+                    <h2>System Settings</h2>
+                </div>
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>Appearance</h3>
+                        <div class="setting-item">
+                            <label>Theme</label>
+                            <select id="themeSetting">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="system">System Default</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Font Size</label>
+                            <select id="fontSizeSetting">
+                                <option value="small">Small</option>
+                                <option value="medium">Medium</option>
+                                <option value="large">Large</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Blockchain</h3>
+                        <div class="setting-item">
+                            <label>Difficulty Level</label>
+                            <select id="difficultySetting">
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Block Size</label>
+                            <select id="blockSizeSetting">
+                                <option value="small">Small (1 certificate)</option>
+                                <option value="medium">Medium (5 certificates)</option>
+                                <option value="large">Large (10 certificates)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Notifications</h3>
+                        <div class="setting-item">
+                            <label>Enable Notifications</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="notificationSetting" checked>
+                                <span class="toggle-slider"></span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label>Notification Duration</label>
+                            <select id="notificationDurationSetting">
+                                <option value="2000">2 seconds</option>
+                                <option value="3000" selected>3 seconds</option>
+                                <option value="5000">5 seconds</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Data Management</h3>
+                        <div class="setting-item">
+                            <button class="secondary-btn" id="exportDataBtn">
+                                <i class="fas fa-file-export"></i>
+                                Export Blockchain Data
+                            </button>
+                        </div>
+                        <div class="setting-item">
+                            <button class="secondary-btn" id="importDataBtn">
+                                <i class="fas fa-file-import"></i>
+                                Import Blockchain Data
+                            </button>
+                        </div>
+                        <div class="setting-item">
+                            <button class="danger-btn" id="resetDataBtn">
+                                <i class="fas fa-trash-alt"></i>
+                                Reset Blockchain
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="notification" class="notification hidden">
+            <i class="notification-icon"></i>
+            <span class="notification-message"></span>
+        </div>
+
+        <div id="previewModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Certificate Preview</h3>
+                    <button class="close-btn" id="closePreviewModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="previewContent">
+                    <!-- Certificate preview will be rendered here -->
+                </div>
+                <div class="modal-footer">
+                    <button class="secondary-btn" id="downloadPreviewBtn">
+                        <i class="fas fa-download"></i>
+                        Download Preview
+                    </button>
+                    <button class="submit-btn" id="issueFromPreviewBtn">
+                        <i class="fas fa-check"></i>
+                        Issue Certificate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 
